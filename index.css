@@ -8,7 +8,7 @@ ul{
 	margin: 0;
 }
 .container{
-	width: 80%;
+	width: 1024px;
 	margin: 0 auto;
 }
 
@@ -36,6 +36,7 @@ nav .nav-above,nav .nav-black{
 
 nav .nav-above{
 	z-index: 3;
+	cursor: pointer;
 }
 
 nav .nav-black{
@@ -81,3 +82,48 @@ nav .nav-move .nav-white li{
 	color: #fff;
 	float: left;
 }
+
+#skin {
+	position: relative;
+}
+
+#skin-move{
+	width: 200px;
+	height: 145px;
+	border: 2px solid #f60;
+	position: absolute;
+	left: 145px;
+	top: 44px;
+	z-index: 1;
+}
+
+#skin-above{
+	position: absolute;
+	left: 120px;
+	top: 43px;
+	z-index: 2;
+}
+
+#skin-above li{
+	width: 252px;
+	height: 144px;
+	float: left;
+}
+
+#skin figure{
+	padding: 0;
+	margin: 0 25px;
+	float: left;
+	border: 1px solid #999;
+	cursor: pointer;
+}
+
+#skin figure figcaption {
+	text-align: center;
+	height: 20px;
+	line-height: 20px;
+	color: maroon;
+	font-size: 14px;
+	letter-spacing: 2px;
+}
+

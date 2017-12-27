@@ -65,6 +65,12 @@ Base.prototype.animate = function(obj){
 	return this;
 }
 
+/**
+ * 绑定移入移出事件
+ * @param  {[type]} fn1 [description]
+ * @param  {[type]} fn2 [description]
+ * @return {[type]}     [description]
+ */
 Base.prototype.hover = function(fn1,fn2){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele = this.elements[i];
@@ -74,6 +80,11 @@ Base.prototype.hover = function(fn1,fn2){
 	return this;
 }
 
+/**
+ * 获取或设置left
+ * @param  {[type]} val [description]
+ * @return {[type]}     [description]
+ */
 Base.prototype.left = function(val){
 	if(val === undefined){
 		return this.elements[0].offsetLeft;
@@ -84,4 +95,53 @@ Base.prototype.left = function(val){
 		return this;
 	}
 };
+
+/**
+ * 绑定点击事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
+Base.prototype.click = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		this.elements[i].addEventListener('click', fn, false);
+	}
+	return this;
+};
+
+/**
+ * 返回获取到的DOM节点
+ * @return {[type]} [description]
+ */
+Base.prototype.getNodes=function(){
+	return this.elements;
+}
+
+/**
+ * 获取当前节点的索引
+ * @return {[type]} [description]
+ */
+Base.prototype.index = function(){
+	//当前节点
+	var ele = this.elements[0];
+	//节点名 相当于 tagName
+	var nodeName = ele.nodeName;
+	//父节点
+	var p = ele.parentNode;
+	//父节点下的所有元素节点
+	var children = p.children; 
+	var arr = [];
+	//循环得到父节点下与当前节点标签名相同的所以元素节点
+	for(var i = 0; i < children.length; i++){
+		if(children[i].nodeName === nodeName){
+			arr.push(children[i]);
+		}
+	}
+
+	//循环判断当前节点为同标签元素节点的第几个索引，并返回索引
+	for(var i = 0; i < arr.length; i++){
+		if(arr[i] === ele){
+			return i;
+		}
+	}
+}
 

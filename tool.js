@@ -138,11 +138,11 @@ function animate(ele,obj){
 	//设置动画参数对象默认值
 	obj = obj || {};
 	//设置定时时间默认值
-	time = obj['time'] || 30;
+	var time = obj['time'] || 30;
 	//设置缓冲速度默认值
-	speed = obj['speed'] || 3;
+	var speed = obj['speed'] || 3;
 	//设置动画效果默认值
-	mulAct = obj['mulAct'] || {left : 500};
+	var mulAct = obj['mulAct'] || {left : 500};
 	//最后一个动画效果执行完成的标记
 	var flag = true;
 	//防止与上一次动画冲突，每次开始动画前都先清除上一次的动画
