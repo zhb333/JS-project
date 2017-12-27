@@ -145,3 +145,20 @@ Base.prototype.index = function(){
 	}
 }
 
+Base.prototype.show=function(){
+	for(var i = 0; i < this.elements.length; i++){
+		this.elements[i].style.display = 'block';
+	}
+	return this;
+}
+
+Base.prototype.hide = function(){
+	for(var i = 0; i < this.elements.length; i++){
+		this.elements[i].style.display = 'none';
+	}
+	return this;
+}
+
+Base.prototype.eq = function(index){
+	return this.elements[index];
+}
