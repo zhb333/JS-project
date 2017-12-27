@@ -138,9 +138,9 @@ function animate(ele,obj){
 	//设置动画参数对象默认值
 	obj = obj || {};
 	//设置定时时间默认值
-	time = obj['time'] || 50;
+	time = obj['time'] || 30;
 	//设置缓冲速度默认值
-	speed = obj['speed'] || 5;
+	speed = obj['speed'] || 3;
 	//设置动画效果默认值
 	mulAct = obj['mulAct'] || {left : 500};
 	//最后一个动画效果执行完成的标记

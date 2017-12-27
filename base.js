@@ -25,6 +25,9 @@ function Base(x){
 		}else{
 			this.elements = oneSelector(x);
 		}
+	//如果传递的object类型,即 x 为节点对象
+	}else if(typeof x === 'object'){
+		this.elements[0] = x;
 	}
 }
 
@@ -53,7 +56,7 @@ Base.prototype.css=function(attr,val){
  * @param  {[type]} obj 动画参数对象 形式{mulAct:{opacity:0,width:500}}
  * @return {[type]}     [description]
  */
-Base.prototype.animate=function(obj){
+Base.prototype.animate = function(obj){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele = this.elements[i];
 		//为获取到的节点设置动画效果
@@ -62,46 +65,23 @@ Base.prototype.animate=function(obj){
 	return this;
 }
 
-function animate(ele,obj){
-	obj = obj || {};
-	time = obj['time'] || 50;
-	speed = obj['speed'] || 5;
-	mulAct = obj['mulAct'] || {left : 500};
-	var flag = true;
-	clearInterval(ele.timer);
-	ele.timer = setInterval(function(){
-		for(var k in mulAct){
-			var attr = k.toLowerCase();
-			var target = mulAct[k];
-			var current = getCss(ele,attr);
-			current = attr === 'opacity' ? parseFloat(current) * 100 : parseInt(current);
-			step = (target - current)/speed;
-			step = step < 0 ? Math.floor(step) : Math.ceil(step);
-			var temp = current + step;
-			if(step === 0){
-				temp = target;
-				flag = true;
-			}else if(step < 0 && temp <= target ){
-				temp = target;
-				flag = true;
-			}else if(step > 0 && temp >= target){
-				temp = target;
-				flag = true;
-			}else{
-				flag =false;
-			}
-			if(attr === 'opacity'){
-				setCss(ele,attr,parseFloat(temp/100));
-				setCss(ele,'filter','alpha(opacity=' + temp + ')');
-			}else{
-				setCss(ele,attr,temp+'px');
-			}
-		}
-		if(flag){
-			clearInterval(ele.timer);
-			if(obj['fn'] !== undefined){
-				obj.fn();
-			}
-		}
-	},time);
+Base.prototype.hover = function(fn1,fn2){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele = this.elements[i];
+		ele.addEventListener('mouseover',fn1,false);
+		ele.addEventListener('mouseout',fn2,false);
+	}
+	return this;
 }
+
+Base.prototype.left = function(val){
+	if(val === undefined){
+		return this.elements[0].offsetLeft;
+	}else{
+		for(var i = 0; i<this.elements.length; i++){
+			this.elements[i].style.left = val + 'px';
+		}
+		return this;
+	}
+};
+
