@@ -24,7 +24,7 @@ function oneSelector(str, parent){
 	switch(tag){
 		// ID 选择器
 		case '#' :
-			return document.getElementById(selector); 
+			return [document.getElementById(selector)]; 
 		break;
 		// 类选择器，由于getElementsByClassName()为新增方法，需要兼容
 		case '.' : 
@@ -106,4 +106,89 @@ function getClass(selector,parent){
 		}
 		return collection;
 	}
+}
+
+/**
+ * 获取CSS样式
+ * @param  {[type]} ele  节点对象
+ * @param  {[type]} attr 属性
+ * @return {[type]}      [description]
+ */
+function getCss(ele,attr){
+	return window.getComputedStyle(ele,null)[attr];
+}
+
+/**
+ * 设置CSS样式
+ * @param {[type]} ele  节点对象
+ * @param {[type]} attr 属性
+ * @param {[type]} val  属性值
+ */
+function setCss(ele,attr,val){
+	ele.style[attr] = val;
+}
+
+/**
+ * 动画实现函数
+ * @param  {[type]} ele 节点对象
+ * @param  {[type]} obj 动画参数对象 形式{mulAct:{opacity:0,width:500}}
+ * @return {[type]}     [description]
+ */
+function animate(ele,obj){
+	//设置动画参数对象默认值
+	obj = obj || {};
+	//设置定时时间默认值
+	time = obj['time'] || 50;
+	//设置缓冲速度默认值
+	speed = obj['speed'] || 5;
+	//设置动画效果默认值
+	mulAct = obj['mulAct'] || {left : 500};
+	//最后一个动画效果执行完成的标记
+	var flag = true;
+	//防止与上一次动画冲突，每次开始动画前都先清除上一次的动画
+	clearInterval(ele.timer);
+	//开始执行动画
+	ele.timer = setInterval(function(){
+		//循环执行多个动画效果
+		for(var k in mulAct){
+			//动画效果 ： left width opacity...
+			var attr = k.toLowerCase();
+			//动画结束位置、状态
+			var target = mulAct[k];
+			//节点当前位置、状态
+			var current = getCss(ele,attr);
+			current = attr === 'opacity' ? parseFloat(current) * 100 : parseInt(current);
+			//根据缓冲速度计算步长
+			step = (target - current)/speed;
+			step = step < 0 ? Math.floor(step) : Math.ceil(step);
+			//动画增量
+			var temp = current + step;
+			if(step === 0){
+				temp = target;
+				flag = true;
+			}else if(step < 0 && temp <= target ){
+				temp = target;
+				flag = true;
+			}else if(step > 0 && temp >= target){
+				temp = target;
+				flag = true;
+			}else{
+				flag =false;
+			}
+			//增量赋值给节点样式
+			if(attr === 'opacity'){
+				setCss(ele,attr,parseFloat(temp/100));
+				setCss(ele,'filter','alpha(opacity=' + temp + ')');
+			}else{
+				setCss(ele,attr,temp+'px');
+			}
+		}
+		//最后一个动画执行完毕，清除定时器，如果有队列函数，执行队列函数
+		if(flag){
+			clearInterval(ele.timer);
+			if(obj['fn'] !== undefined){
+				obj.fn();
+			}
+		}
+	},time);
 }

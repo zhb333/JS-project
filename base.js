@@ -37,13 +37,71 @@ function Base(x){
 Base.prototype.css=function(attr,val){
 	// 只有attr参数，为获取样式
 	if(arguments.length === 1){
-		return window.getComputedStyle(this.elements[0],null)[attr];
+		return getCss(this.elements[0],attr);
 	//两个参数，为设置样式
 	}else if(arguments.length === 2){
 		//为每个获取到的节点设置样式
 		for(var i =0; i < this.elements.length; i++){
-			this.elements[i].style[attr] = val;
+			setCss(this.elements[i],attr,val);
 		}
 	}
 	return this;
+}
+
+/**
+ * 类库实现动画效果
+ * @param  {[type]} obj 动画参数对象 形式{mulAct:{opacity:0,width:500}}
+ * @return {[type]}     [description]
+ */
+Base.prototype.animate=function(obj){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele = this.elements[i];
+		//为获取到的节点设置动画效果
+		animate(ele,obj);
+	}
+	return this;
+}
+
+function animate(ele,obj){
+	obj = obj || {};
+	time = obj['time'] || 50;
+	speed = obj['speed'] || 5;
+	mulAct = obj['mulAct'] || {left : 500};
+	var flag = true;
+	clearInterval(ele.timer);
+	ele.timer = setInterval(function(){
+		for(var k in mulAct){
+			var attr = k.toLowerCase();
+			var target = mulAct[k];
+			var current = getCss(ele,attr);
+			current = attr === 'opacity' ? parseFloat(current) * 100 : parseInt(current);
+			step = (target - current)/speed;
+			step = step < 0 ? Math.floor(step) : Math.ceil(step);
+			var temp = current + step;
+			if(step === 0){
+				temp = target;
+				flag = true;
+			}else if(step < 0 && temp <= target ){
+				temp = target;
+				flag = true;
+			}else if(step > 0 && temp >= target){
+				temp = target;
+				flag = true;
+			}else{
+				flag =false;
+			}
+			if(attr === 'opacity'){
+				setCss(ele,attr,parseFloat(temp/100));
+				setCss(ele,'filter','alpha(opacity=' + temp + ')');
+			}else{
+				setCss(ele,attr,temp+'px');
+			}
+		}
+		if(flag){
+			clearInterval(ele.timer);
+			if(obj['fn'] !== undefined){
+				obj.fn();
+			}
+		}
+	},time);
 }
