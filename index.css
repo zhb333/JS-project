@@ -1,7 +1,10 @@
 body{
 	background-color: #f5f5f5; 
 }
-
+h3{
+	padding: 0;
+	margin: 0;
+}
 ul{
 	list-style: none;
 	padding: 0;
@@ -83,9 +86,7 @@ nav .nav-move .nav-white li{
 	float: left;
 }
 
-#skin {
-	position: relative;
-}
+
 
 #skin-move{
 	width: 200px;
@@ -111,21 +112,25 @@ nav .nav-move .nav-white li{
 	cursor: pointer;
 }
 
-#skin figure{
+figure{
 	padding: 0;
-	margin: 0 25px;
+	margin: 0;
 	float: left;
-	border: 1px solid #999;
 	cursor: pointer;
+	border: 1px solid #999;
 }
 
-#skin figure figcaption {
+figure figcaption {
 	text-align: center;
 	height: 20px;
 	line-height: 20px;
 	color: maroon;
 	font-size: 14px;
 	letter-spacing: 2px;
+}
+
+#skin figure{
+	margin: 0 25px;
 }
 
 .clear{
@@ -158,6 +163,7 @@ nav .nav-move .nav-white li{
 	color: #A3A5A3;
 	margin-bottom: 6px;
 	border-bottom: 1px solid rgba(152,152,152,0.5); 
+	cursor: pointer;
 }
 
 
@@ -316,14 +322,91 @@ nav .nav-move .nav-white li{
 	font-size: 22px;
 }
 
-/*#banner-right .banner-text{
-	display: block;
-	height: 50px;
-	line-height: 50px;
-	text-indent: 10px;
-	color: #f5f5f5;
-}*/
+#load figure{
+	overflow: hidden;
+	margin: 0 25px;
+}
 
+#load-move{
+	width: 150px;
+	height: 132px;
+	border: 2px solid #99CC33;
+	position: absolute;
+	left: 25px;
+	top: -1px;
+	z-index: 1;
+}
+
+#load-above{
+	position: absolute;
+	left: 0px;
+	z-index: 2;
+	/*border: 1px solid yellow;*/
+}
+
+#load-above li{
+	width: 202px;
+	height: 136px;
+	float: left;
+	/*border: 1px solid red;*/
+	cursor: pointer;
+}
+
+#load .img{
+	width: 150px;
+	height: 112px;
+	overflow: hidden;
+}
+
+#drag .box{
+	width: 590px;
+	height: 500px;
+	position: absolute;
+	left: 300px;
+	display: none;
+	z-index: 20;
+}
+
+#drag .head{
+	color: #333;
+	text-align: center;
+	line-height: 40px;
+	font-size: 18px;
+	height: 40px;
+	background: #ececec;
+}
+
+#drag .body{
+	height: 450px;
+	background: #333;
+}
+
+#drag .close{
+	height: 35px;
+	width: 35px;
+	font-size: 30px;
+	line-height: 35px;
+	text-align: center;
+	position: absolute;
+	right: 5px;
+	top: 2px;
+	color: maroon;
+	background: #ccc;
+}
+
+#drag .close:hover{
+	color: red;
+	background: #bbb;
+}
+
+#screen {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: none;
+	background-color: rgba(0,0,0,0.5); 
+	z-index: 19;
+}
 
 
 

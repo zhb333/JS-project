@@ -95,6 +95,23 @@ Base.prototype.left = function(val){
 		return this;
 	}
 };
+
+/**
+ * 获取或设置top
+ * @param  {[type]} val [description]
+ * @return {[type]}     [description]
+ */
+Base.prototype.top = function(val){
+	if(val === undefined){
+		return this.elements[0].offsetTop;
+	}else{
+		for(var i = 0; i<this.elements.length; i++){
+			this.elements[i].style.top = val + 'px';
+		}
+		return this;
+	}
+};
+
 /**
  * 获取或设置width
  * @param  {[type]} val [description]
@@ -106,6 +123,22 @@ Base.prototype.width = function(val){
 	}else{
 		for(var i = 0; i<this.elements.length; i++){
 			this.elements[i].style.Width = val + 'px';
+		}
+		return this;
+	}
+};
+
+/**
+ * 获取或设置Height
+ * @param  {[type]} val [description]
+ * @return {[type]}     [description]
+ */
+Base.prototype.height = function(val){
+	if(val === undefined){
+		return this.elements[0].offsetHeight;
+	}else{
+		for(var i = 0; i<this.elements.length; i++){
+			this.elements[i].style.height = val + 'px';
 		}
 		return this;
 	}
@@ -233,3 +266,71 @@ Base.prototype.opacity = function(num){
 		return this;
 	}
 }
+
+/**
+ * 元素屏幕居中
+ * @return {[type]} [description]
+ */
+Base.prototype.center = function(){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele = this.elements[i];
+		//窗口的宽度 - 元素的宽度 / 2 + 滚动的距离
+		var diffLeft = parseInt((winSize().width - ele.clientWidth)/2 + scroll().left);
+		var diffTop = parseInt((winSize().height - ele.clientHeight)/2 + scroll().top);
+
+		ele.style.left = diffLeft + 'px';
+		ele.style.top = diffTop + 'px';
+	}
+	return this;
+}
+
+/**
+ * 设置元素拖拽
+ * @return {[type]} [description]
+ */
+Base.prototype.drag = function(){
+	for( var i = 0; i < this.elements.length; i++){
+		var ele = this.elements[i];
+		//鼠标按下时，计算 当前鼠标坐标 - 当前元素的left/top --》 偏差值
+		ele.addEventListener('mousedown',function(e){
+			var diffX = e.clientX - ele.offsetLeft;
+			var diffY = e.clientY - ele.offsetTop;
+
+			//鼠标移动时，实时获取鼠标坐标 - 偏差值 --》 left/top 并不断设置left/top值
+			document.addEventListener('mousemove',move ,false);
+
+			function move(e){
+				var left = e.clientX - diffX;
+				var top = e.clientY - diffY;
+				ele.style.left = left + 'px';
+				ele.style.top = top + 'px';
+				//移动过程，不让元素超出屏幕范围
+				overRange(ele);
+			}
+
+			//鼠标抬起，清除移动等事件
+			document.addEventListener('mouseup',up,false);
+
+			function up(e){
+				document.removeEventListener('mousemove',move);
+				document.removeEventListener('mouseup',up);
+			}
+		},false);
+	}
+}
+
+/**
+ * 隐藏屏幕滚动条
+ * @return {[type]} [description]
+ */
+Base.prototype.lock = function(){
+	document.documentElement.style.overflow='hidden';//隐藏滚动条
+};
+
+/**
+ * 恢复屏幕滚动条
+ * @return {[type]} [description]
+ */
+Base.prototype.unlock = function(){
+	document.documentElement.style.overflow='auto';//恢复滚动条
+};

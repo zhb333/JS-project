@@ -28,7 +28,7 @@ M(function(){
  * 换肤                                        [description]
  */
 M(function(){
-	// 皮肤列表
+	// 皮肤上层列表
 	var skinLis = M('#skin li');
 	// 移动框
 	var skinMove = M('#skin-move');
@@ -101,7 +101,7 @@ M(function(){
 		//显示当前覆盖块
 		M(covers.eq(index)).show();
 		//显示当前详细展示区域
-		M(boxs.eq(index)).show();
+		M(boxs.eq(index)).show().opacity(0).animate({mulAct:{opacity:100},time:60});
 	},function(){
 		//隐藏所有覆盖快
 		covers.hide();
@@ -126,5 +126,63 @@ M(function(){
 	var imgs = M('#banner-right .banner-img');
 	var dots = M('#banner-right .banner-dot li');
 	banner({imgs:imgs,dots:dots,text:null,type:2,time:2000});
+});
+
+/**拖拽 & 预加载**/
+M(function(){
+	//移动框
+	var move = M('#load-move');
+	//图片上层列表
+	var aboveLis = M('#load-above li');
+	//图片
+	var imgs = M('#load img');
+	//弹框
+	var box = M('#drag .box');
+	//弹框关闭按钮
+	var boxClose = M('#drag .close');
+	//锁屏
+	var screen = M('#screen');
+	//鼠标移动到上层列表，移动框移动到当前位置
+	aboveLis.hover(function(){
+		//鼠标悬停的当前位置
+		var li = M(this);
+		//当前列表项的索引
+		var index = li.index();
+		//当前位置的列表项的left值
+		var left = li.left();
+		//移动框移动到当前位置
+		move.left(left+25);
+		//鼠标悬停，图片的变化效果
+		M(imgs.eq(index)).animate({mulAct:{height:130,width:170},speed:5});
+	// 鼠标离开，移动框还保留在最后的位置，图片还原
+	},function(){
+		var li = M(this);
+		var index = li.index();
+		//还原图片
+		M(imgs.eq(index)).animate({mulAct:{height:112,width:150},speed:5});
+	});
+
+	//点击图片上层列表，弹出当前图片对应的大图窗口，锁屏
+	aboveLis.click(function(){
+		box.show().center().lock();
+		screenLock(screen.eq(0));
+	});
+
+	//点击关闭按钮，隐藏弹框，解除锁屏
+	boxClose.click(function(){
+		box.hide().unlock();
+		screenUnlock(screen.eq(0));
+	});
+
+	//窗口重置，不让弹框移出屏幕，并重新锁屏
+	window.onresize = function(){
+		overRange(box.eq(0));
+		//重新锁屏
+		if(box.css('display') === 'block'){
+			screenLock(screen.eq(0));
+		}
+	}
+	//实现拖拽
+	box.drag();
 });
 

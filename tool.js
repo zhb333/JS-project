@@ -297,3 +297,83 @@ function banner(obj){
 		}
 	}
 }
+
+/**
+ * 获取屏幕滚动的距离
+ * @return {[type]} [description]
+ */
+function scroll(){
+	return {
+		left : window.pageXOffset|| document.documentElement.scrollLeft || document.body.scrollLeft,
+		top : window.pageYOffset|| document.documentElement.scrollTop || document.body.scrollTop
+	}
+}
+
+/**
+ * 获取窗口的宽高
+ * @return {[type]} [description]
+ */
+function winSize(){
+	return {
+		width : window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+		height : window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+	}
+}
+
+
+/**
+ * 元素超出屏幕的处理函数
+ * @param  {[type]} box [description]
+ * @return {[type]}     [description]
+ */
+function overRange(box){
+	//滚动距离
+	var scrollLeft = parseInt(scroll().left);
+	var scrollTop = parseInt(scroll().top);
+	//最大的偏移距离
+	var maxLeft = scrollLeft + winSize().width - box.clientWidth;
+	var maxTop = scrollTop + winSize().height - box.clientHeight;
+	//当前的距离
+	var left = box.offsetLeft;
+	var top = box.offsetTop;
+
+	//如果当前的距离 < 屏幕滚动的距离，则设置当前距离为屏幕滚动的距离
+	if(left <= scrollLeft ){
+		left = scrollLeft;
+	//如果当前距离大于最大的偏移距离，则设置当前距离为最大的偏移距离
+	}else if(left >= maxLeft){
+		left = maxLeft;
+	}
+	box.style.left = left + 'px';
+
+	if(top <= scrollTop ){
+		top = scrollTop;
+	}else if(top >= maxTop){
+		top = maxTop;
+	}
+	box.style.top = top + 'px';
+};
+
+/**
+ * 锁屏函数实现
+ * @param  {[type]} ele [description]
+ * @return {[type]}     [description]
+ */
+function screenLock(ele){
+	//宽度为屏幕宽度 + 滚动的距离
+	ele.style.width = winSize().width +　scroll().left + 'px';
+	//高度为屏幕高度 + 滚动的距离
+	ele.style.height = winSize().height +　scroll().top + 'px';
+	//显示锁屏
+	ele.style.display = 'block';
+}
+
+/**
+ * 解锁函数
+ * @param  {[type]} ele [description]
+ * @return {[type]}     [description]
+ */
+function screenUnlock(ele){
+	//隐藏锁屏元素
+	ele.style.display = 'none';
+}
