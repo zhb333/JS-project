@@ -359,12 +359,13 @@ figure figcaption {
 }
 
 #drag .box{
-	width: 590px;
-	height: 500px;
+	width: 600px;
+	height: 490px;
 	position: absolute;
 	left: 300px;
 	display: none;
 	z-index: 20;
+	border: 1px solid #333;
 }
 
 #drag .head{
@@ -374,11 +375,29 @@ figure figcaption {
 	font-size: 18px;
 	height: 40px;
 	background: #ececec;
+	cursor: move;
 }
 
 #drag .body{
 	height: 450px;
+	width: 600px;
 	background: #333;
+	position: absolute;
+}
+
+#drag .body .loading{
+	margin-left: 285px;
+	margin-top: 200px;
+	display: block;
+}
+
+#drag .body .img{
+width: 600px;
+height: 450px;
+position: absolute;
+left: 0;
+top: 0;
+display: none;
 }
 
 #drag .close{
@@ -392,6 +411,7 @@ figure figcaption {
 	top: 2px;
 	color: maroon;
 	background: #ccc;
+	cursor: pointer;
 }
 
 #drag .close:hover{
@@ -408,6 +428,39 @@ figure figcaption {
 	z-index: 19;
 }
 
+#img-left,#img-right{
+	height: 450px;
+	width: 300px;
+	background: rgba(0,0,0,0);
+	position: absolute;
+	left: 0;
+	top: 0px;
+	cursor: pointer;
+}
+
+#img-right{
+	left:300px;
+}
+
+#go-left,#go-right{
+	height: 80px;
+	width: 80px;
+	opacity: 0;
+	background-color: rgba(0,0,0,0.7);
+	filter: alpha(opacity=0);
+	position: absolute;
+	left: 0;
+	top: 180px;
+	line-height: 80px;
+	text-align: center;
+	color: #eee;
+	font-weight: bold;
+	font-size: 60px;
+}
+
+#go-right{
+	left: 520px;
+}
 
 
 

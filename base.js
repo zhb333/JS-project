@@ -288,16 +288,21 @@ Base.prototype.center = function(){
  * 设置元素拖拽
  * @return {[type]} [description]
  */
-Base.prototype.drag = function(){
+Base.prototype.drag = function(obj){
 	for( var i = 0; i < this.elements.length; i++){
 		var ele = this.elements[i];
 		//鼠标按下时，计算 当前鼠标坐标 - 当前元素的left/top --》 偏差值
 		ele.addEventListener('mousedown',function(e){
 			var diffX = e.clientX - ele.offsetLeft;
 			var diffY = e.clientY - ele.offsetTop;
+			//拖拽仅限于obj
+			if(e.target === obj){
+				//鼠标移动时，实时获取鼠标坐标 - 偏差值 --》 left/top 并不断设置left/top值
+				document.addEventListener('mousemove',move ,false);
 
-			//鼠标移动时，实时获取鼠标坐标 - 偏差值 --》 left/top 并不断设置left/top值
-			document.addEventListener('mousemove',move ,false);
+				//鼠标抬起，清除移动等事件
+				document.addEventListener('mouseup',up,false);
+			}
 
 			function move(e){
 				var left = e.clientX - diffX;
@@ -307,10 +312,6 @@ Base.prototype.drag = function(){
 				//移动过程，不让元素超出屏幕范围
 				overRange(ele);
 			}
-
-			//鼠标抬起，清除移动等事件
-			document.addEventListener('mouseup',up,false);
-
 			function up(e){
 				document.removeEventListener('mousemove',move);
 				document.removeEventListener('mouseup',up);
@@ -334,3 +335,21 @@ Base.prototype.lock = function(){
 Base.prototype.unlock = function(){
 	document.documentElement.style.overflow='auto';//恢复滚动条
 };
+
+/**
+ * 获取或设置节点属性
+ * @param  {[type]} attr [description]
+ * @param  {[type]} val  [description]
+ * @return {[type]}      [description]
+ */
+Base.prototype.attr = function(attr,val){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele = this.elements[i];
+		if(arguments.length === 1){
+			return ele.getAttribute(attr);
+		}else{
+			ele.setAttribute(attr,val);
+			return this;
+		}
+	}
+}

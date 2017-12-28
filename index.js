@@ -142,6 +142,22 @@ M(function(){
 	var boxClose = M('#drag .close');
 	//锁屏
 	var screen = M('#screen');
+	// 弹框头部
+	var head = M('#drag .head h3');
+	//loading图片
+	var loading = M('#drag .loading');
+	//大图
+	var bigImg = M('#drag .img');
+
+	//大图分左右两侧 
+	//左侧
+	var imgLeft = M('#img-left');
+	//右侧
+	var imgRight = M('#img-right');
+	//左箭头
+	var goLeft = M('#go-left');
+	//右箭头
+	var goRight = M('#go-right');
 	//鼠标移动到上层列表，移动框移动到当前位置
 	aboveLis.hover(function(){
 		//鼠标悬停的当前位置
@@ -162,10 +178,21 @@ M(function(){
 		M(imgs.eq(index)).animate({mulAct:{height:112,width:150},speed:5});
 	});
 
+	var total = aboveLis.length();
 	//点击图片上层列表，弹出当前图片对应的大图窗口，锁屏
 	aboveLis.click(function(){
+		// 弹窗，居中
 		box.show().center().lock();
+		//锁屏
 		screenLock(screen.eq(0));
+
+		var li = M(this);
+		//当前索引
+		var index = li.index();
+		//当前大图链接
+		var src = li.attr('src');
+		//加载当前大图，以及预加载左右两张大图
+		preNext(src,index);
 	});
 
 	//点击关闭按钮，隐藏弹框，解除锁屏
@@ -183,6 +210,75 @@ M(function(){
 		}
 	}
 	//实现拖拽
-	box.drag();
+	box.drag(head.eq(0));
+
+
+	//鼠标移入大图左右两侧，实现左右箭头的显示效果
+	//左箭头效果
+	imgLeft.hover(function(){
+		goLeft.animate({mulAct:{opacity:70},time:100});
+	},function(){
+		goLeft.animate({mulAct:{opacity:0}});
+	});
+
+	//右箭头效果
+	imgRight.hover(function(){
+		goRight.animate({mulAct:{opacity:70},time:100});
+	},function(){
+		goRight.animate({mulAct:{opacity:0}});
+	});
+
+	//点击大图左侧区域，加载上一张大图，并预加载该大图的左右两张大图
+	imgLeft.click(function(){
+		//当前图片索引
+		var index = parseInt(bigImg.attr('index')) -1;
+		index = index < 0 ? total - 1 : index;
+		//当前大图链接
+		var src = M(this).attr('src');
+		//加载当前大图，并预加载左右两张大图
+		preNext(src,index);
+	});
+
+	//点击大图右侧区域，加载下一张大图，并预加载该大图的左右两张大图
+	imgRight.click(function(){
+		//当前图片索引
+		var index = parseInt(bigImg.attr('index')) + 1;
+		index = index > total -1 ? 0 : index;
+		//当前大图链接
+		var src = M(this).attr('src');
+		//加载当前大图，并预加载左右两张大图
+		preNext(src,index);
+	});
+
+	/**
+	 * 预加载实现函数
+	 * @param  {[type]} src   [description]
+	 * @param  {[type]} index [description]
+	 * @return {[type]}       [description]
+	 */
+	function preNext(src,index){
+		//大图未加载成功以前，默认loading图片
+		loading.show();
+		//监听大图加载完毕后，显示大图，并隐藏loading
+		var newImg = new Image();
+		newImg.onload = function(){
+			loading.hide();
+			bigImg.attr('src',newImg.src).show();
+		}
+		newImg.src = src;
+
+		//获取当前索引，对应前后两个索引
+		var pre = previous(index, total);
+		var nextNum = next(index, total);
+
+		//根据前后索引获取左右大图链接
+		var preSrc = aboveLis.eq(pre).getAttribute('src');
+		var nextSrc = aboveLis.eq(nextNum).getAttribute('src');
+		//保存当前索引
+		bigImg.attr('index',index);
+		//保存左右大图链接
+		imgLeft.attr('src', preSrc);
+		imgRight.attr('src', nextSrc);
+	}
 });
 
