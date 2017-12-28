@@ -68,33 +68,63 @@ M(function(){
 	}
 });
 
+/** 轮播图左侧
+**/
 M(function(){
+	//左侧导航列表
 	var lis = M('#banner-left li');
+	//列表的第一个节点
 	var lisOne = lis.elements[0];
+	//第一个节点的实际高度
 	var lisOneH = lisOne.offsetHeight;
+	//margin-bottom值
 	var lisOneMB = parseInt(getCss(lisOne, 'marginBottom'));
+	//覆盖块
 	var covers = M('.banner-cover');
-	var coverNodes = covers.getNodes();
-	var coverFirstT = parseInt(getCss(coverNodes[0], 'top'));
+	//第一个覆盖块的top值
+	var coverFirstT = parseInt(getCss(covers.eq(0), 'top'));
+	//每一个覆盖块top值的增量
 	var coverSingleT = lisOneH + lisOneMB;
+	//导航列表的详细展示区域
 	var boxs = M('.banner-box');
-	for(var i = 0; i < coverNodes.length; i++){
-		var coverNode = coverNodes[i];
+
+	//循环初始化每个覆盖块的位置
+	for(var i = 0; i < covers.length(); i++){
+		var coverNode = covers.eq(i);
 		coverNode.style.top = coverFirstT + i * coverSingleT + 'px';
 	}
 
-
+	//鼠标滑入左侧导航列表，显示该列表节点下的覆盖快，以及该节点下详细展示区域
 	lis.hover(function(){
+		//当前列表节点的索引
 		var index = M(this).index();
-		M(coverNodes[index]).show();
+		//显示当前覆盖块
+		M(covers.eq(index)).show();
+		//显示当前详细展示区域
 		M(boxs.eq(index)).show();
 	},function(){
+		//隐藏所有覆盖快
 		covers.hide();
+		//隐藏所有展示区域
 		boxs.hide();
 	});
-
-
-
-
-
 });
+
+
+/**轮播图中间**/
+M(function(){
+	var imgs = M('#banner-center .banner-img');
+	var dots = M('#banner-center .banner-dot li');
+	var text = M('#banner-center .banner-text');
+
+	banner({imgs:imgs,dots:dots,text:text,type:1,time:3000});
+});
+
+
+/**轮播图右侧**/
+M(function(){
+	var imgs = M('#banner-right .banner-img');
+	var dots = M('#banner-right .banner-dot li');
+	banner({imgs:imgs,dots:dots,text:null,type:2,time:2000});
+});
+

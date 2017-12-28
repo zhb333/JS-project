@@ -93,14 +93,13 @@ nav .nav-move .nav-white li{
 	border: 2px solid #f60;
 	position: absolute;
 	left: 0px;
-	top: 0px;
+	top: -1px;
 	z-index: 1;
 }
 
 #skin-above{
 	position: absolute;
 	/*left: 112px;*/
-	/*top: 46px;*/
 	z-index: 2;
 	/*border: 1px solid red;*/
 }
@@ -109,6 +108,7 @@ nav .nav-move .nav-white li{
 	width: 252px;
 	height: 144px;
 	float: left;
+	cursor: pointer;
 }
 
 #skin figure{
@@ -205,6 +205,7 @@ nav .nav-move .nav-white li{
 	background: #333;
 	position: absolute;
 	left: 200px;
+	overflow: hidden;
 }
 
 #banner-center .banner-img{
@@ -213,16 +214,19 @@ nav .nav-move .nav-white li{
 	line-height: 300px;
 }
 
-.banner-img-1{background: #99CCCC}
-.banner-img-2{background: #99CCFF}
-.banner-img-3{background: #99CC66}
 .banner-img-1, .banner-img-2, .banner-img-3 {
 	text-align: center;
 	color: maroon;	
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 1;
+	opacity: 0;
+	filter: alpha(opacity=0);
 }
+.banner-img-1{background: #99CCCC;z-index: 2;}
+.banner-img-2{background: #99CCFF}
+.banner-img-3{background: #99CC66}
 
 #banner-center .banner-bottom {
 	height: 50px;
@@ -234,6 +238,7 @@ nav .nav-move .nav-white li{
 	left: 0;
 	bottom: 0;
 	background: rgba(50,50,50,0.7);
+	z-index: 3;
 }
 
 #banner-center .banner-dot {
@@ -262,6 +267,63 @@ nav .nav-move .nav-white li{
 	text-indent: 10px;
 	color: #f5f5f5;
 }
+
+
+#banner-right{
+	height: 300px;
+	width: 200px;
+	background: #ccc;
+	position: absolute;
+	right: 0;
+	top: 0;
+	overflow: hidden;
+}
+
+#banner-right .banner-img{
+	width: 200px;
+	height: 300px;
+	line-height: 300px;
+}
+
+.banner-img-1, .banner-img-2, .banner-img-3 {
+	text-align: center;
+	color: maroon;	
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+#banner-right .banner-img-1{background: #CCCC99;z-index: 2;}
+#banner-right .banner-img-2{background: #CC9966}
+#banner-right .banner-img-3{background: #CCCC00}
+
+#banner-right .banner-bottom {
+	height: 50px;
+}
+
+#banner-right .banner-dot {
+	position: absolute;
+	left: 50px;
+	top: 0;
+}
+
+#banner-right .banner-dot li{
+	height: 50px;
+	width: 30px;
+	line-height: 50px;
+	font-size: 22px;
+}
+
+/*#banner-right .banner-text{
+	display: block;
+	height: 50px;
+	line-height: 50px;
+	text-indent: 10px;
+	color: #f5f5f5;
+}*/
+
 
 
 

@@ -95,6 +95,21 @@ Base.prototype.left = function(val){
 		return this;
 	}
 };
+/**
+ * 获取或设置width
+ * @param  {[type]} val [description]
+ * @return {[type]}     [description]
+ */
+Base.prototype.width = function(val){
+	if(val === undefined){
+		return this.elements[0].offsetWidth;
+	}else{
+		for(var i = 0; i<this.elements.length; i++){
+			this.elements[i].style.Width = val + 'px';
+		}
+		return this;
+	}
+};
 
 /**
  * 绑定点击事件
@@ -145,6 +160,10 @@ Base.prototype.index = function(){
 	}
 }
 
+/**
+ * 显示获取到的节点
+ * @return {[type]} [description]
+ */
 Base.prototype.show=function(){
 	for(var i = 0; i < this.elements.length; i++){
 		this.elements[i].style.display = 'block';
@@ -152,6 +171,10 @@ Base.prototype.show=function(){
 	return this;
 }
 
+/**
+ * 隐藏获取到的节点
+ * @return {[type]} [description]
+ */
 Base.prototype.hide = function(){
 	for(var i = 0; i < this.elements.length; i++){
 		this.elements[i].style.display = 'none';
@@ -159,6 +182,54 @@ Base.prototype.hide = function(){
 	return this;
 }
 
+/**
+ * 返回指定索引的DOM节点
+ * @param  {[type]} index [description]
+ * @return {[type]}       [description]
+ */
 Base.prototype.eq = function(index){
 	return this.elements[index];
+}
+
+/**
+ * 返回节点的个数
+ * @return {[type]} [description]
+ */
+Base.prototype.length = function(){
+	return this.elements.length
+};
+
+
+/**
+ * 设置或获取innerHTML内容
+ * @param  {[type]} str [description]
+ * @return {[type]}     [description]
+ */
+Base.prototype.html = function(str){
+	if(str === undefined){
+		return this.elements[0].innerHTML;
+	}else{
+		this.elements[0].innerHTML = str;
+		return this;
+	}
+};
+
+/**
+ * 设置或获取透明度
+ * @param  {[type]} num [description]
+ * @return {[type]}     [description]
+ */
+Base.prototype.opacity = function(num){
+	if(num === undefined){
+		return this.elements[0].style.opacity;
+	}else{
+		for(var i = 0; i<this.elements.length; i++){
+			var ele =this.elements[i];
+			//W3C标准
+			ele.style.opacity = parseFloat(num/100);
+			//万恶的IE
+			ele.style.filter = 'alpha(opacity='+ num +')';
+		}
+		return this;
+	}
 }

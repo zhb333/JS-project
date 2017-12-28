@@ -131,7 +131,7 @@ function setCss(ele,attr,val){
 /**
  * 动画实现函数
  * @param  {[type]} ele 节点对象
- * @param  {[type]} obj 动画参数对象 形式{mulAct:{opacity:0,width:500}}
+ * @param  {[type]} obj 动画参数对象 形式{mulAct:{opacity:0,width:500},fn:function(){},speed:5,time:50}
  * @return {[type]}     [description]
  */
 function animate(ele,obj){
@@ -191,4 +191,109 @@ function animate(ele,obj){
 			}
 		}
 	},time);
+}
+
+
+/**
+ * 获取上一索引
+ * @param  {[type]} num   [description]
+ * @param  {[type]} total [description]
+ * @return {[type]}       [description]
+ */
+function previous(num, total){
+	return num <= 0 ? total -1 : num -1; 
+}
+/**
+ * 获取下一个索引
+ * @param  {[type]}   num   [description]
+ * @param  {[type]}   total [description]
+ * @return {Function}       [description]
+ */
+function next(num, total){
+	return num >= total - 1 ? 0 : num + 1;
+}
+
+
+/**
+ * 轮播图
+ * @param  {[type]} obj 参数对象 调用方式： ｛imgs:imgs,dots:dots,text:null,type:1,time:3000｝
+ * @return {[type]}     [description] 
+ */
+function banner(obj){
+	//设置轮播类型默认值
+	obj.type = obj.type === undefined ? 1 : obj.type;
+	//存放定时器返回的ID
+	var timer = null;
+	//自动轮播下一个节点的索引
+	var num = 1;
+	
+	//鼠标移入小圆点，停止自动轮播，手动轮播到当前小圆点对于的图片节点
+	obj.dots.hover(function(){
+		clearInterval(timer);
+		bannerAct(this);
+	//鼠标移出小圆点，重新设置下一个节点的索引，开启自动轮播
+	},function(){
+		num = M(this).index() + 1;
+		timer = setInterval(autoAct,obj.time);
+	});
+
+	//默认自动轮播
+	timer = setInterval(autoAct,obj.time);
+
+	/**
+	 * 自动轮播实现函数
+	 * @return {[type]} [description]
+	 */
+	function autoAct(){
+		//控制节点索引的范围
+		num = num >= obj.dots.length() ? 0 : num;
+		bannerAct(obj.dots.eq(num));
+		//自动进入下一个索引
+		num++;
+	}
+
+	/**
+	 * 轮播效果，具体实现函数
+	 * @param  {[type]} dot 节点索引代表的小圆点
+	 * @return {[type]}     [description]
+	 */
+	function bannerAct(dot){
+		//使用类库，实例化小圆点对象
+		var dot = M(dot);
+		//设置所有小圆点的样式
+		obj.dots.css('color','#000');
+		//设置当前小圆点的样式
+		dot.css('color','#FF6666');
+		//通过当前小圆点得到小圆点对应的索引
+		var num = dot.index();
+		//通过索引获取当前图片
+		var img = M(obj.imgs.eq(num));
+		//所有图片的个数
+		var total = obj.imgs.length();
+		//获取上一个索引
+		var preNum = previous(num, total);
+
+		//类型一的轮播效果，透明度渐变
+		if(obj.type === 1){
+			//设置所有图片（透明），z轴坐标为1
+			obj.imgs.css('zIndex',1).opacity(0);
+			//设置上一张图片从（不透明）到（透明）的动画
+			M(obj.imgs.eq(preNum)).opacity(100).animate({mulAct:{opacity : 0},time : 100});
+			//设置当前图片的z轴坐标为2，从（透明）到（不透明）的动画
+			img.css('zIndex',2).opacity(0).animate({mulAct:{opacity : 100},time : 100});
+		//类型二的轮播效果，左右切换
+		}else if(obj.type === 2){
+			//设置所有图片（不透明），z轴坐标为1
+			obj.imgs.css('zIndex',1).opacity(100);
+			//设置上一张图片，从x轴 0 到图片的 正的(宽度) 移动的动画
+			M(obj.imgs.eq(preNum)).left(0).animate({mulAct:{left : img.width()},time : 100});
+			//设置当前图片，从x轴图片 负的（宽度） 到 0 移动的动画 
+			img.css('zIndex',2).left(-img.width()).animate({mulAct:{left : 0},time : 100});
+		}
+
+		//如果有文字对象，则设置文字
+		if(obj.text !== null){
+			obj.text.html(obj.imgs.eq(num).innerHTML);
+		}
+	}
 }
