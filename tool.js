@@ -377,3 +377,139 @@ function screenUnlock(ele){
 	//隐藏锁屏元素
 	ele.style.display = 'none';
 }
+
+
+/**
+ * 表单序列化
+ * @param  {[type]} form [description]
+ * @return {[type]}      [description]
+ */
+function serialize(form){
+	var data={};
+	for(var i=0;i<form.elements.length;i++){
+		var ele=form.elements[i];
+		switch(ele.type){
+			case 'button':
+			case 'submit':
+			case 'file':
+			case 'reset':
+			case undefined:
+			break;
+			case 'select-one':
+			case 'select-multiple':
+				var options=ele.options;
+				var op_arr=[];//多选
+				for(var k=0;k<options.length;k++){
+					var op=options[k];
+					if(op.selected){
+						if(op.hasAttribute('value')){
+							op_arr.push(op.value);
+						}else{
+							op_arr.push(op.text);
+						}
+					}
+				}
+				data[ele.name]=op_arr.length<=1?op_arr[0] : op_arr;
+				break;
+			case 'radio':
+			case 'checkbox':
+				if(!ele.checked){
+					break;
+				}
+			default:
+				data[ele.name]=data[ele.name]==undefined?ele.value : data[ele.name]+','+ele.value;
+		}
+	}
+
+	return data;
+}
+
+
+
+function get(url){
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState === 4){
+			if(xhr.status === 200){
+				return xhr.responseText;
+			}else{
+				throw new Error('请求失败，错误码：　' +　xhr.status + '错误原因： ' + xhr.statusText);
+			}
+		}
+	}
+
+	xhr.open('get',url);
+	xhr.send();
+}
+
+function post(url,data){
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState === 4){
+			if(xhr.status === 200){
+				return xhr.responseText;
+			}else{
+				throw new Error('请求失败，错误码：　' +　xhr.status + '错误原因： ' + xhr.statusText);
+			}
+		}
+	}
+	xhr.open('post',url);
+	xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+	xhr.send(data);
+}
+
+
+/**
+ * ajax 
+ * @param  {[type]} obj 传参方式 ｛url : url , data :　data, method : method, scyn : scyn, fn : fn｝
+ * @return {[type]}     [description]
+ */
+function ajax(obj){
+	var xhr = new XMLHttpRequest();//初始化xhr对象
+	var url = obj.url;//url
+	var data = obj.data;//组装数据
+
+	if(obj.method.toLowerCase() == 'get'){//get请求，数据通过url传递
+		url += url.indexOf('?')>-1? '&' : '?';
+		url += data;
+	}
+
+	if(obj.scyn === true){//异步请求，xhr监听请求过程
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState === 4){
+				ajax.callBack(xhr,obj);
+			}
+		}
+	}
+	xhr.open(obj.method, url, obj.scyn);//准备请求
+
+	if(obj.method.toLowerCase() == 'get'){//get请求send参数为null
+		xhr.send(null);
+	}
+
+	if(obj.method.toLowerCase() == 'post'){//post请求 通过send 传递参数
+		xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+		xhr.send(data);
+	}
+
+	if(obj.scyn === false){//同步请求，等待请求完毕后执行
+		ajax.callBack(xhr,obj);
+	}
+}
+
+//请求完毕后的执行函数
+ajax.callBack=function(xhr,obj){
+	if(xhr.status == 200){
+		obj.fn(xhr.responseText);
+	}else{
+		throw new Error('请求发生错误！\n错误代码： '+xhr.status+' 错误描述：'+xhr.statusText);
+	}
+}
+
+function createData(data){
+	var arr=[];
+	for(var i in data){
+		arr.push(encodeURIComponent(i)+'='+encodeURIComponent(data[i]));
+	}
+	return arr.join('&');
+}

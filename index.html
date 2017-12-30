@@ -205,27 +205,53 @@
 	</section>
 	<div id="screen"></div>
 
-
-
-	<p>1</p>
-	<p>2</p>
-	<p>3</p>
-	<p>4</p>
-	<p>5</p>
-	<p>6</p>
-	<p>7</p>
-	<p>8</p>
-	<p>9</p>
-	<p>10</p>
-	<p>11</p>
-	<p>12</p>
-	<p>13</p>
-	<p>14</p>
-	<p>15</p>
-	<p>16</p>
-	<p>17</p>
-	<p>18</p>
-	<p>19</p>
-	<p>20</p>
+	<section id="message">
+		<h3 class="title"><span style="letter-spacing: 1px">ajax</span>留言板</h3>
+		<div class="container">
+			<div class="left">
+				<form autocomplete="off" id="mes-form">
+					<p><label for="user">用户名：</label><input type="text" id="user" name="user" placeholder="留下尊姓大名...">
+						<span class="alert" style="display: block;">&nbsp;</span>
+						<span class="info alert">用户名可以为中英文,不能有空格、数字不能开头、2-6位</span>
+						<span class="danger alert">不合法</span>
+						<span class="success alert">可用</span>
+					</p>
+					<p><label for="email">邮　箱：</label><input type="text" id="email" name="email" placeholder="请输入您的邮箱..." autocomplete="off">
+						<span class="alert" style="display: block;">&nbsp;</span>
+						<span class="info alert">请输入合法邮箱(1140457303@qq.com)</span>
+						<span class="danger alert">不合法</span>
+						<span class="success alert">可用</span>
+						<ul id="email-list">
+							<li><span class="text"></span>@qq.com</li>
+							<li><span class="text"></span>@163.com</li>
+							<li><span class="text"></span>@sina.com</li>
+							<li><span class="text"></span>@sohu.com</li>
+							<li><span class="text"></span>@gmail.com</li>
+						</ul>
+					</p>
+					<p>
+						<label style="vertical-align: 65px;">留　言：</label>
+						<textarea name="content" id="content" placeholder="请留下您的脚印..."></textarea>
+						<!-- <div style="position: relative;top: -15px;">您还可以输入 200 个字符！</div> -->
+						<p class="total-word">
+							<span style="color: #06f;">您还可以输入 <em class="count" style="color: green;">200</em> &nbsp;个字符！</span>
+							<span style="color: maroon;">您已超过 <em class="count" style="color: #f60;">200</em> &nbsp;个字符！</span>
+							<span style="color: red;">请输入有效内容!</span>
+						</p>
+					</p>
+					<p>
+						<button id="btn">提交</button>
+					</p>
+				</form>
+			</div>
+			<div class="right">
+				
+			</div>
+			<div class="clear"></div>
+		</div>
+	</section>
+	<footer>
+		<a href="http://www.miitbeian.gov.cn">粤ICP备17107393号</a>　<span style="letter-spacing: 0">javaScript</span>项目演示
+	</footer>
 </body>
 </html>

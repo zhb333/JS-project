@@ -1,14 +1,19 @@
 body{
 	background-color: #f5f5f5; 
 }
-h3{
+h3,p{
 	padding: 0;
 	margin: 0;
 }
-ul{
+ul,dl,dt,dd{
 	list-style: none;
 	padding: 0;
 	margin: 0;
+}
+
+a{
+	text-decoration: none;
+	color: #333;
 }
 .container{
 	width: 1024px;
@@ -426,6 +431,7 @@ display: none;
 	display: none;
 	background-color: rgba(0,0,0,0.5); 
 	z-index: 19;
+	cursor: not-allowed;
 }
 
 #img-left,#img-right{
@@ -462,7 +468,183 @@ display: none;
 	left: 520px;
 }
 
+#message .left, #message .right{
+	width: 450px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
+	padding: 10px 25px 10px;
+}
+
+#message .left{
+	color: #555;
+	float: left;
+	background: #fff;
+	position: relative;
+}
+
+/* #message .left  p{
+	margin-bottom: 15px;
+} */
+
+#user,#email{
+	width: 180px;
+	height: 25px;
+	text-indent: 10px;
+}
+
+#content{
+	width: 300px;
+	height: 80px;
+	resize: none;
+	text-indent: 6px;
+}
+
+#btn{
+	display: block;
+	margin : 0 auto;
+	width: 100px;
+	height: 35px;
+	border: none;
+	border-radius: 5px;
+	background: #99CC33;
+	color: #fff;
+	letter-spacing: 5px;
+	cursor: pointer;
+}
+
+#btn:hover{
+	font-weight: bold;
+	background: #99CC00;
+	/*border: 1px solid #fff;*/
+}
+
+#message .right{
+	float: right;
+	background: #fff;
+	height: 236px;
+	overflow: scroll;
+}
+
+#message dl{
+	margin-bottom: 10px;
+}
+
+#message .right dt{
+	height: 25px;
+	line-height: 25px;
+	letter-spacing: 1px;
+	color: maroon;
+	border-bottom: 1px dashed #ccc;
+	font-size: 14px;
+}
+
+#message .right dt span{
+	font-size: 10px;
+	margin-left: 10px;
+	color: #666;
+}
+
+
+#message .right dd{
+	margin-top: 8px;
+	padding: 0 10px 0 15px;
+	height: 18px;
+	line-height: 18px;
+	letter-spacing: 1px;
+	text-indent: 20px;
+	color: #333;
+	font-size: 12px;
+	height: auto;
+	display: block;
+}
 
 
 
 
+#message .alert{
+	height:28px;
+	width:185px;
+	position:relative;
+	top:-28px;
+	left:245px;
+	height: 14px;
+	line-height: 14px;
+	font-size: 10px;
+	padding-left: 15px;
+}
+
+#message .info{
+	display: none;
+	color: #06f;
+	background: url(img/info.png) no-repeat left center;
+}
+
+#message .danger{
+	display: none;
+	color: maroon;
+	background: url(img/danger.png) no-repeat left center;
+}
+
+#message .success{
+	display: none;
+	color: green;
+	background: url(img/success.png) no-repeat left center;
+}
+
+#message .total-word{
+	width: 360px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 12px;
+	text-align: right;
+}
+
+#message .count{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#email-list{
+	width: 180px;
+	height: 100px;
+	position: absolute;
+	background: #fff;
+	top: 85px;
+	left: 82px;
+	border: 1px solid #ccc;
+	display: none;
+}
+
+#email-list li{
+	width: 165px;
+	padding-right:15px;
+	height: 20px;
+	line-height: 20px;
+	text-indent: 15px;
+	overflow: hidden;
+	font-size: 12px;
+	color: #666;
+	cursor: pointer;
+}
+
+#email-list li:hover{
+	color: #06f;
+	background: #eee;
+}
+
+.total-word span{
+	display: none;
+}
+
+
+footer{
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: #444;
+	font-size: 12px;
+	background: #aaa;
+	letter-spacing: 1px;
+	margin-top: 15px;
+}

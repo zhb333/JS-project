@@ -282,3 +282,199 @@ M(function(){
 	}
 });
 
+
+M(function(){
+	var user = M('#user');
+	var email = M('#email');
+	var uReg = /^[a-zA-Z_\u4e00-\u9fa5]{1}[\w\u4e00-\u9fa5]{1,5}$/;
+	var eReg = /^\w+@\w{2,5}(\.[a-z1-9]{2,4}){1,2}$/;
+	var uAlert = oneSelector('span',user.eq(0).parentNode);
+	var eAlert = oneSelector('span',email.eq(0).parentNode);
+	validate(user, uAlert, uReg);
+	validate(email, eAlert, eReg);
+
+	var emailList = M('#email-list');
+	var texts = M('#email-list .text');
+	var lis = M('#email-list li');
+	var content = M('#content');
+	var spans = M('.total-word span');
+	var counts = M('.total-word .count');
+	var btn = M('#btn');
+	var form = M('#mes-form');
+	var right = M('#message .right');
+
+	var liIndex = 0;
+	var total = lis.length();
+	email.input(function(e){
+		var val = trim(this.value);
+		if(/@/.test(val)){
+			emailList.hide();
+		}else{
+			emailList.show();
+		}
+		texts.html(val);
+	});
+
+	email.keyup(function(e){
+		lis.css('background','#fff').css('color','#666');
+		M(lis.eq(liIndex)).css('background','#eee').css('color','#06f');
+		if(e.keyCode === 40){
+			liIndex = next(liIndex, total);
+		}else if(e.keyCode === 38){
+			liIndex = previous(liIndex,total);
+		}
+
+		var li = M(lis.eq(liIndex));
+		lis.css('background','#fff').css('color','#666');
+		li.css('background','#eee').css('color','#06f');
+		if(e.keyCode === 13){
+			email.val(li.text());
+			emailList.hide();
+			liIndex = 0;
+		}
+	});
+
+	lis.mousedown(function(){
+		email.val(M(this).text());
+	});
+
+	lis.mouseover(function(){
+		lis.css('background','#fff').css('color','#666');
+		M(this).css('background','#eee').css('color','#06f');
+	});
+
+
+	email.blur(function(){
+		emailList.hide();
+	});
+
+
+	content.input(function(){
+		var len = trim(this.value).length;
+		var diff = 200 -len;
+		if((diff) < 0){
+			spans.hide();
+			M(spans.eq(1)).show();
+			counts.eq(1).innerHTML = Math.abs(diff);
+		}else{
+			spans.hide();
+			M(spans.eq(0)).show();
+			counts.eq(0).innerHTML = diff;
+		}
+	});
+	getMes(right);
+	btn.click(function(){
+		form.submit(function(e){
+			e.preventDefault();
+		});
+
+		if(!uReg.test(user.eq(0).value)){
+			M(uAlert).hide();
+			M(uAlert[2]).show();
+			user.flag = 0;
+		}else{
+			user.flag = 1;
+		}
+
+		if(!eReg.test(email.eq(0).value)){
+			M(eAlert).hide();
+			M(eAlert[2]).show();
+			email.flag = 0;
+		}else{
+			email.flag = 1;
+		}
+		var contentLen = content.eq(0).value.length;
+		if(contentLen > 200){
+			spans.hide();
+			M(spans.eq(1)).show();
+			content.flag = 0;
+		}else if(contentLen === 0){
+			spans.hide();
+			M(spans.eq(2)).show();
+			content.flag = 0;
+		}else{
+			content.flag = 1;
+		}
+
+		if(content.flag + email.flag + user.flag === 3){
+			var data = createData(serialize(form.eq(0)));
+			data += "&action=setMes";
+			ajax({
+				url : 'index.php',
+				data : data,
+				method : 'post',
+				scyn : true,
+				fn : fn
+			});
+
+			function fn(text){
+				var res = JSON.parse(text);
+				if(res === true){
+					getMes(right)
+				}else{
+					throw new Error('留言失败，数据没有成功存入数据库...');
+				}
+			}
+		}
+	});
+
+	function getMes(right){
+		ajax({
+			url : 'index.php?action=getMes',
+			data : null,
+			method : 'get',
+			scyn : true,
+			fn : get
+		});
+
+		function get(text){
+			right.html(text);
+		}
+	}
+
+	function validate(obj,eAlert,reg){
+		var eindex = 0;
+		
+		var eBlank = M(eAlert[0]);
+		var eInfo = M(eAlert[1]);
+		var eDang = M(eAlert[2]);
+		var eSucc = M(eAlert[3]);
+		var meAlert = M(eAlert);
+		obj.focus(function(){
+			meAlert.hide();
+			eInfo.show();
+		});
+
+
+		obj.input(function(){
+			var val = trim(this.value);
+			if(val.length === 0 ){
+				meAlert.hide();
+				eInfo.show();
+				eindex = 0;
+			}else if(reg.test(val)){
+				meAlert.hide();
+				eSucc.show();
+				eindex = 3;
+			}else{
+				meAlert.hide();
+				eBlank.show();
+				eindex = 2;
+			}
+		});
+
+		obj.blur(function(){
+			meAlert.hide();
+			var val = trim(this.value);
+			if(val.length === 0 ){
+				eindex = 0;
+			}else if(reg.test(val)){
+				eindex = 3;
+			}else{
+				eindex = 2;
+			}
+			M(meAlert.eq(eindex)).show();
+		});
+	}
+});
+

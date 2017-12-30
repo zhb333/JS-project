@@ -27,7 +27,11 @@ function Base(x){
 		}
 	//如果传递的object类型,即 x 为节点对象
 	}else if(typeof x === 'object'){
-		this.elements[0] = x;
+		if(x.length === undefined){
+			this.elements[0] = x;
+		}else{
+			this.elements = x;
+		}
 	}
 }
 
@@ -242,7 +246,10 @@ Base.prototype.html = function(str){
 	if(str === undefined){
 		return this.elements[0].innerHTML;
 	}else{
-		this.elements[0].innerHTML = str;
+		for(var i = 0; i < this.elements.length; i++){
+			var ele =this.elements[i];
+			ele.innerHTML = str;
+		}
 		return this;
 	}
 };
@@ -352,4 +359,98 @@ Base.prototype.attr = function(attr,val){
 			return this;
 		}
 	}
+}
+
+
+Base.prototype.focus = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements[i];
+		ele.addEventListener('focus', fn, false);
+	}
+	return this;
+}
+
+Base.prototype.blur = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements[i];
+		ele.addEventListener('blur', fn, false);
+	}
+	return this;
+}
+
+
+Base.prototype.input = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements[i];
+		ele.addEventListener('input', fn, false);
+	}
+	return this;
+}
+
+Base.prototype.keyup = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements[i];
+		ele.addEventListener('keyup', fn, false);
+	}
+	return this;
+}
+
+Base.prototype.mousedown = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements[i];
+		ele.addEventListener('mousedown', fn, false);
+	}
+	return this;
+}
+
+Base.prototype.mouseover = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements[i];
+		ele.addEventListener('mouseover', fn, false);
+	}
+	return this;
+}
+
+Base.prototype.submit = function(fn){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements[i];
+		ele.addEventListener('submit', fn, false);
+	}
+	return this;
+}
+
+Base.prototype.val = function(str){
+	if(str === undefined){
+		return this.elements[0].value;
+	}else{
+		for(var i = 0; i < this.elements.length; i++){
+			var ele =this.elements[i];
+			ele.value = str;
+		}
+		return this;	
+	}
+}
+
+Base.prototype.text = function(str){
+	if(str === undefined){
+		var ele = this.elements[0];
+		return ele.innerText || ele.textContent;
+	}else{
+		for(var i = 0; i < this.elements.length; i++){
+			var ele =this.elements;
+			if(ele.innerText){
+				ele.innerText = str;
+			}else{
+				ele.textContent = str;
+			}
+		}
+		return this;
+	}
+}
+
+Base.prototype.same = function(){
+	for(var i = 0; i < this.elements.length; i++){
+		var ele =this.elements;
+	}
+	return this;
 }
