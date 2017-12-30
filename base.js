@@ -361,7 +361,11 @@ Base.prototype.attr = function(attr,val){
 	}
 }
 
-
+/**
+ * 获取焦点事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
 Base.prototype.focus = function(fn){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele =this.elements[i];
@@ -370,6 +374,11 @@ Base.prototype.focus = function(fn){
 	return this;
 }
 
+/**
+ * 失去焦点事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
 Base.prototype.blur = function(fn){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele =this.elements[i];
@@ -378,7 +387,11 @@ Base.prototype.blur = function(fn){
 	return this;
 }
 
-
+/**
+ * 监听键盘输入事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
 Base.prototype.input = function(fn){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele =this.elements[i];
@@ -387,6 +400,11 @@ Base.prototype.input = function(fn){
 	return this;
 }
 
+/**
+ * 鼠标抬起事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
 Base.prototype.keyup = function(fn){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele =this.elements[i];
@@ -395,6 +413,11 @@ Base.prototype.keyup = function(fn){
 	return this;
 }
 
+/**
+ * 鼠标按下事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
 Base.prototype.mousedown = function(fn){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele =this.elements[i];
@@ -403,6 +426,11 @@ Base.prototype.mousedown = function(fn){
 	return this;
 }
 
+/**
+ * 鼠标悬停事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
 Base.prototype.mouseover = function(fn){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele =this.elements[i];
@@ -411,6 +439,11 @@ Base.prototype.mouseover = function(fn){
 	return this;
 }
 
+/**
+ * 表单提交事件
+ * @param  {Function} fn [description]
+ * @return {[type]}      [description]
+ */
 Base.prototype.submit = function(fn){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele =this.elements[i];
@@ -419,6 +452,11 @@ Base.prototype.submit = function(fn){
 	return this;
 }
 
+/**
+ * 获取或设置表单value值
+ * @param  {[type]} str [description]
+ * @return {[type]}     [description]
+ */
 Base.prototype.val = function(str){
 	if(str === undefined){
 		return this.elements[0].value;
@@ -431,6 +469,11 @@ Base.prototype.val = function(str){
 	}
 }
 
+/**
+ * 获取或设置innerText值
+ * @param  {[type]} str [description]
+ * @return {[type]}     [description]
+ */
 Base.prototype.text = function(str){
 	if(str === undefined){
 		var ele = this.elements[0];
@@ -448,9 +491,3 @@ Base.prototype.text = function(str){
 	}
 }
 
-Base.prototype.same = function(){
-	for(var i = 0; i < this.elements.length; i++){
-		var ele =this.elements;
-	}
-	return this;
-}

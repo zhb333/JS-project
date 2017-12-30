@@ -101,13 +101,14 @@ M(function(){
 		//显示当前覆盖块
 		M(covers.eq(index)).show();
 		//显示当前详细展示区域
-		M(boxs.eq(index)).show().opacity(0).animate({mulAct:{opacity:100},time:60});
+		M(boxs.eq(index)).show().animate({mulAct:{opacity:100},time:60});
 	},function(){
 		//隐藏所有覆盖快
 		covers.hide();
 		//隐藏所有展示区域
-		boxs.hide();
+		boxs.hide().opacity(0);
 	});
+
 });
 
 
@@ -282,51 +283,88 @@ M(function(){
 	}
 });
 
-
+/**
+ * ajax留言模块
+ * @param  {[type]} ){	var user          [description]
+ * @return {[type]}         [description]
+ */
 M(function(){
+	//用户框
 	var user = M('#user');
+	// 邮箱框
 	var email = M('#email');
+	// 验证用户规则的正则表达式
 	var uReg = /^[a-zA-Z_\u4e00-\u9fa5]{1}[\w\u4e00-\u9fa5]{1,5}$/;
+	//验证邮箱格式的正则表达式
 	var eReg = /^\w+@\w{2,5}(\.[a-z1-9]{2,4}){1,2}$/;
+	//用户框的提示信息
 	var uAlert = oneSelector('span',user.eq(0).parentNode);
+	//邮箱框的提示信息
 	var eAlert = oneSelector('span',email.eq(0).parentNode);
+
+	//验证用户，邮箱，并根据验证结果进行提示
 	validate(user, uAlert, uReg);
 	validate(email, eAlert, eReg);
 
+	//实现邮箱框下拉列表功能
+	//下拉框
 	var emailList = M('#email-list');
+	//邮箱框的输入文本显示的位置
 	var texts = M('#email-list .text');
+	// 所有下拉列表选项
 	var lis = M('#email-list li');
+	//留言
 	var content = M('#content');
+	//留言的提示信息
 	var spans = M('.total-word span');
+	//计算输入个数的显示位置
 	var counts = M('.total-word .count');
+	//提交按钮
 	var btn = M('#btn');
+	//留言表单
 	var form = M('#mes-form');
+	//ajax取得的数据存放的位置
 	var right = M('#message .right');
 
+	//下来列表上下键盘选择，的初始选中位置
 	var liIndex = 0;
+	//所有下拉列表项的总长度
 	var total = lis.length();
+	//监听邮箱框的输入
 	email.input(function(e){
+		//得到输入的值
 		var val = trim(this.value);
+		//如果输入了@符号，隐藏下拉框
 		if(/@/.test(val)){
 			emailList.hide();
+		//没有@符号就一直显示下拉框
 		}else{
 			emailList.show();
 		}
+		//将输入值显示到下来列表项中
 		texts.html(val);
 	});
 
+	//监听邮箱框，键盘抬起事件
 	email.keyup(function(e){
+		//初始化下拉列表的选中状态
 		lis.css('background','#fff').css('color','#666');
 		M(lis.eq(liIndex)).css('background','#eee').css('color','#06f');
+		//如果用户按了下箭头
 		if(e.keyCode === 40){
+			//得到下一个索引
 			liIndex = next(liIndex, total);
+		// 如果用户按了上箭头
 		}else if(e.keyCode === 38){
+			//得到上一个索引
 			liIndex = previous(liIndex,total);
 		}
 
+		//再次更新下拉列表选中的状态
 		var li = M(lis.eq(liIndex));
 		lis.css('background','#fff').css('color','#666');
 		li.css('background','#eee').css('color','#06f');
+		//如果用户按了回车，将选中状态的值，替换为邮箱框的值，并隐藏下拉框，并还原初始值
 		if(e.keyCode === 13){
 			email.val(li.text());
 			emailList.hide();
@@ -334,40 +372,58 @@ M(function(){
 		}
 	});
 
+	//点击下拉列表，将点击的列表内容替换为邮箱框的值
 	lis.mousedown(function(){
 		email.val(M(this).text());
 	});
 
+	//设置鼠标在下拉框上移动的效果
 	lis.mouseover(function(){
 		lis.css('background','#fff').css('color','#666');
 		M(this).css('background','#eee').css('color','#06f');
 	});
 
-
+	//当邮箱框失去焦点，隐藏下拉框
 	email.blur(function(){
 		emailList.hide();
 	});
 
-
+	//监听留言区域的输入
 	content.input(function(){
+		//得到输入的长度
 		var len = trim(this.value).length;
+		//得到还能输入的长度
 		var diff = 200 -len;
+		//当还能输入的长度小于0.即超过了
 		if((diff) < 0){
+			//隐藏初始状态
 			spans.hide();
+			//显示错误提示
 			M(spans.eq(1)).show();
+			//显示超过的值
 			counts.eq(1).innerHTML = Math.abs(diff);
+		//如果没有超过
 		}else{
+			// 隐藏初始状态
 			spans.hide();
+			//提示还能输入多少
 			M(spans.eq(0)).show();
+			//显示还能输入的长度
 			counts.eq(0).innerHTML = diff;
 		}
 	});
+
+	//ajax获取数据，并填充
 	getMes(right);
+
+	//点击提示按钮，验证输入信息，如果信息正确，提交到数据库，并更新留言
 	btn.click(function(){
+		//阻止表单自动提交
 		form.submit(function(e){
 			e.preventDefault();
 		});
 
+		//验证用户名
 		if(!uReg.test(user.eq(0).value)){
 			M(uAlert).hide();
 			M(uAlert[2]).show();
@@ -376,6 +432,7 @@ M(function(){
 			user.flag = 1;
 		}
 
+		//验证邮箱
 		if(!eReg.test(email.eq(0).value)){
 			M(eAlert).hide();
 			M(eAlert[2]).show();
@@ -383,6 +440,7 @@ M(function(){
 		}else{
 			email.flag = 1;
 		}
+		//验证留言内容
 		var contentLen = content.eq(0).value.length;
 		if(contentLen > 200){
 			spans.hide();
@@ -396,9 +454,12 @@ M(function(){
 			content.flag = 1;
 		}
 
+		//如果验证成功了
 		if(content.flag + email.flag + user.flag === 3){
+			//得到用户输入的数据
 			var data = createData(serialize(form.eq(0)));
 			data += "&action=setMes";
+			//ajax将数据提交到数据库
 			ajax({
 				url : 'index.php',
 				data : data,
@@ -409,7 +470,9 @@ M(function(){
 
 			function fn(text){
 				var res = JSON.parse(text);
+				// 如果数据库成功存储数据
 				if(res === true){
+					//更新留言列表
 					getMes(right)
 				}else{
 					throw new Error('留言失败，数据没有成功存入数据库...');
@@ -418,6 +481,12 @@ M(function(){
 		}
 	});
 
+
+	/**
+	 * ajax获取数据并填充，函数封装
+	 * @param  {[type]} right [description]
+	 * @return {[type]}       [description]
+	 */
 	function getMes(right){
 		ajax({
 			url : 'index.php?action=getMes',
@@ -432,20 +501,30 @@ M(function(){
 		}
 	}
 
+	/**
+	 * 验证输入，并提示信息，函数封装
+	 * @param  {[type]} obj    验证对象
+	 * @param  {[type]} eAlert 提示信息
+	 * @param  {[type]} reg    正则
+	 * @return {[type]}        [description]
+	 */
 	function validate(obj,eAlert,reg){
+		//提示信息的初始索引
 		var eindex = 0;
-		
+		//提示信息
 		var eBlank = M(eAlert[0]);
 		var eInfo = M(eAlert[1]);
 		var eDang = M(eAlert[2]);
 		var eSucc = M(eAlert[3]);
 		var meAlert = M(eAlert);
+
+		//获取焦点，提示格式
 		obj.focus(function(){
 			meAlert.hide();
 			eInfo.show();
 		});
 
-
+		//监听输入过程，并验证是否可用
 		obj.input(function(){
 			var val = trim(this.value);
 			if(val.length === 0 ){
@@ -463,6 +542,7 @@ M(function(){
 			}
 		});
 
+		//失去焦点验证格式是正确
 		obj.blur(function(){
 			meAlert.hide();
 			var val = trim(this.value);
@@ -473,6 +553,7 @@ M(function(){
 			}else{
 				eindex = 2;
 			}
+			//显示最后的验证结果
 			M(meAlert.eq(eindex)).show();
 		});
 	}

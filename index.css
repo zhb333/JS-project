@@ -160,15 +160,22 @@ figure figcaption {
 
 #banner-left li {
 	width: 130px;
+	height: 51px;
+	padding-right: 25px;
+	margin-bottom: 6px;
+	cursor: pointer;
+}
+
+#banner-left li span.word{
+	display: block;
+	width: 130px;
 	height: 50px;
 	text-align: center;
 	letter-spacing: 1px;
 	font-size: 18px;
 	line-height: 50px;
 	color: #A3A5A3;
-	margin-bottom: 6px;
 	border-bottom: 1px solid rgba(152,152,152,0.5); 
-	cursor: pointer;
 }
 
 
@@ -199,6 +206,7 @@ figure figcaption {
 	height: 300px;
 	color: #333;
 	font-weight: bold;
+	text-align: center;
 	background: #e9e9e9;
 	border: 1px solid #ccc;
 	border-top-right-radius: 5px;
@@ -208,6 +216,8 @@ figure figcaption {
 	left: 180px;
 	display: none;
 	z-index: 10;
+	opacity: 0;
+	filter: alpha(opacity=0);
 }
 
 #banner-center{

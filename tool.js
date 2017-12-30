@@ -426,37 +426,6 @@ function serialize(form){
 
 
 
-function get(url){
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState === 4){
-			if(xhr.status === 200){
-				return xhr.responseText;
-			}else{
-				throw new Error('请求失败，错误码：　' +　xhr.status + '错误原因： ' + xhr.statusText);
-			}
-		}
-	}
-
-	xhr.open('get',url);
-	xhr.send();
-}
-
-function post(url,data){
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState === 4){
-			if(xhr.status === 200){
-				return xhr.responseText;
-			}else{
-				throw new Error('请求失败，错误码：　' +　xhr.status + '错误原因： ' + xhr.statusText);
-			}
-		}
-	}
-	xhr.open('post',url);
-	xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
-	xhr.send(data);
-}
 
 
 /**
