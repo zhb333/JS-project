@@ -1,10 +1,10 @@
 <?php
 date_default_timezone_set('Asia/Shanghai');
 $dbms='mysql';     //数据库类型
-$host='bdm**********.my3w.com'; //数据库主机名
-$dbName='bdm**********_db';    //使用的数据库
-$user='bdm**********';      //数据库连接用户名
-$pass='***********';          //对应的密码
+$host='bdm305631616.my3w.com'; //数据库主机名
+$dbName='bdm305631616_db';    //使用的数据库
+$user='bdm305631616';      //数据库连接用户名
+$pass='YONGer74520';          //对应的密码
 $dsn="$dbms:host=$host;dbname=$dbName";
 
 try {
