@@ -78,8 +78,8 @@ Base.prototype.animate = function(obj){
 Base.prototype.hover = function(fn1,fn2){
 	for(var i = 0; i < this.elements.length; i++){
 		var ele = this.elements[i];
-		ele.addEventListener('mouseover',fn1,false);
-		ele.addEventListener('mouseout',fn2,false);
+		ele.addEventListener('mouseenter',fn1,false);
+		ele.addEventListener('mouseleave',fn2,false);
 	}
 	return this;
 }
