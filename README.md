@@ -5,7 +5,7 @@
     从零到有，目的主要锻炼自身的编程能力；  
     由于精力有限，目前暂不兼容IE6、7、8；以后有时间再继续完善Base类库的兼容性；  
 
-**该项目的演示网址：** http://www.myphpcms.cn/js
+**该项目的演示网址：** [http://www.myphpcms.cn/js](http://www.myphpcms.cn/js)
 
 |作者|邮箱|网站|  
 |:---:|:---:|:---:  
